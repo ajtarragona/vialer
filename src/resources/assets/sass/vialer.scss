@@ -1,0 +1,104 @@
+
+.vialer-field {
+    .form-group{
+        border-width: 0px;
+        margin-bottom: 0;
+        border-bottom-width: 1px;
+    }
+
+     label{
+        white-space:nowrap;
+        text-overflow:ellipsis;
+        overflow: hidden;
+    }
+
+     .form-group.focused{
+        box-shadow:none;
+        background: transparent;
+    }
+
+    .vialer-map{
+        min-height:300px;
+    }
+
+    &.map-left .vialer-map,
+    &.map-right .vialer-map{
+        height:100%;
+    }
+
+    &.map-left .vialer-map{
+        border-right: 1px solid rgba(52,58,64,.13);
+    }
+    &.map-right .vialer-map{
+        border-left: 1px solid rgba(52,58,64,.13);
+    }
+    &.map-top .vialer-map{
+        border-bottom: 1px solid rgba(52,58,64,.13);
+    }
+    &.map-bottom .vialer-map{
+        border-top: 1px solid rgba(52,58,64,.13);
+    }
+
+        
+    .card-header{
+        position:relative
+    }
+    
+    .card-header .clean-btn{
+        position:absolute;
+        right:0;
+        top:0;
+        padding:6px
+    }
+
+    &.map-left .tab-content,
+    &.map-right .tab-content{
+        height: calc(100% - 51px);
+    }
+
+        
+    .card.with-bg .card-header-tabs .nav-link:not(.active){
+        color: white;
+    }
+}
+
+
+
+table.sticky-header {
+    thead th{
+        position: sticky;
+        top: 0px;
+        background-color:white;
+        /* border-bottom:1px solid #ccc */
+        /* box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); */
+    }
+    tbody tr{
+        cursor:pointer;
+    }
+}
+
+
+
+
+
+.vialer-search-form{
+    .form-group label{
+        white-space:nowrap;
+        text-overflow:ellipsis;
+        overflow: hidden;
+        padding-left:0 !important;
+    }
+
+    .form-group .form-control{
+        padding-left:0 !important;
+    }
+    .form-group .form-control:not(.nom_carrer){
+        width: 50px;
+    }
+    
+    .form-group.focused{
+        box-shadow:none;
+        background: transparent;
+    }
+}
+

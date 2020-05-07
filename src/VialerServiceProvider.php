@@ -3,7 +3,7 @@
 namespace Ajtarragona\Vialer;
 
 use Illuminate\Support\ServiceProvider;
-//use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Blade;
 //use Illuminate\Support\Facades\Schema;
 
 class VialerServiceProvider extends ServiceProvider
@@ -42,6 +42,18 @@ class VialerServiceProvider extends ServiceProvider
         ], 'ajtarragona-vialer-assets');
 
 
+        //idiomas
+        $this->loadTranslationsFrom(__DIR__.'/resources/lang', 'vialer');
+
+        $this->publishes([
+            __DIR__.'/resources/lang' => resource_path('lang/vendor/ajtarragona-vialer'),
+        ], 'ajtarragona-vialer-translations');
+
+         //registra directiva sortablecomponent
+         Blade::directive('vialerFormControl',  function ($expression) {
+            return "<?php echo vialerFormControl({$expression}); ?>";
+        });
+
 
        
     }
@@ -58,9 +70,23 @@ class VialerServiceProvider extends ServiceProvider
 
         //defino facades
         $this->app->bind('vialer', function(){
-            return new \Ajtarragona\Vialer\Models\VialerProvider;
+            return new \Ajtarragona\Vialer\Providers\VialerProvider;
         });
+
+               
+        $this->app->bind('catastro', function(){
+            return new \Ajtarragona\Vialer\Providers\CatastroProvider;
+        });
+
         
+
+        $this->app->bind('districtes', function(){
+            return new \Ajtarragona\Vialer\Providers\DistricteSeccioProvider;
+        });
+
+        
+
+
 
         //helpers
         foreach (glob(__DIR__.'/Helpers/*.php') as $filename){

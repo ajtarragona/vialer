@@ -13,7 +13,9 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.0.0",
-        "laravel/framework": ">=5.6.0"
+        "laravel/framework": ">=5.6.0",
+        "ajtarragona/accede-client": "@dev",
+        "opis/closure": "^3.5@dev"
     },
     "autoload": {
         "psr-4": {
@@ -26,8 +28,9 @@
                 "Ajtarragona\\Vialer\\VialerServiceProvider"
             ],
             "aliases": {
-                "Vialer" : "Ajtarragona\\Vialer\\Facades\\Vialer"
-        
+                "Vialer" : "Ajtarragona\\Vialer\\Facades\\Vialer",
+                "Catastro" : "Ajtarragona\\Vialer\\Facades\\Catastro",
+                "Districtes" : "Ajtarragona\\Vialer\\Facades\\Districtes"
             }
         }
     }
