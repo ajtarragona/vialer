@@ -133,21 +133,15 @@ public function test(){
 
 Accés al catastre per comnsulta de referències catastrals.
 
-TODO. Definir els mètodes
-
-public function getVia($codigoIneVia, $codigoProvincia=null, $codigoMunicipio=null, $codigoMunicipioIne=null)
-
-public function consultaViasPorNombre($nombreVia, $tipoVia=null)
-
-public function consultaDomiciliosPorVia($codigoVia, $numero, $partes=[], $codigoProvincia=null, $codigoMunicipio=null, $codigoMunicipioIne=null)
-
-public function consultaDomiliciosPorRC($rc)
-
-public function consultaDomiciliosPorXY($lat, $lng)
-
-public function consultaXYporRC($rc, $srs=null, $provincia = null, $municipio=null)
-
-public function consultaRCporXY($x, $y, $srs=null)
+Funció | Paràmetres | Retorn 
+--- | --- | --- 
+**getVia** | $codigoIneVia, $codigoProvincia=null, $codigoMunicipio=null, $codigoMunicipioIne=null) | 
+**consultaViasPorNombre** | $nombreVia, $tipoVia=null  | 
+**consultaDomiciliosPorVia** | $codigoVia, $numero, $partes=[], $codigoProvincia=null, $codigoMunicipio=null, $codigoMunicipioIne=null | 
+**consultaDomiliciosPorRC** | $rc | 
+**consultaDomiciliosPorXY** | $lat, $lng | 
+**consultaXYporRC** | $rc, $srs=null, $provincia = null, $municipio=null | 
+**consultaRCporXY** | $x, $y, $srs=null | 
 
 
 
