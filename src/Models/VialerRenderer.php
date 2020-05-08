@@ -34,6 +34,10 @@ class VialerRenderer{
     protected $defaults=[
         'class' => '',
         "value" => null,
+        "label" => null,
+        "placeholder" => null,
+        "helptext" => null,
+        "icon" => null,
         "name" => "vialer",
         "id" => null,
         "map_position" => "bottom",

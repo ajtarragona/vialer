@@ -1,7 +1,15 @@
 <div class="card-header">
     @tabs(['align'=>'center','align'=>'left','class'=>'card-header-tabs'])
         @tab(['href'=>'#tab-via-'.$name,'active'=>true, 'persist'=>$name.'-vialer-tab'])
-            @lang("vialer::vialer.Carrer")
+            @if($icon)
+                @icon($icon) 
+            @endif
+            @if($label)
+                {{ $label }}
+            @else
+                @lang("vialer::vialer.Carrer")
+            @endif
+
         @endtab
         @if($show_refcat)
             @tab(['href'=>'#tab-refcat-'.$name, 'persist'=>$name.'-vialer-tab'])

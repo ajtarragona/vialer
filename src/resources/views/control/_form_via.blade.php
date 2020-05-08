@@ -17,7 +17,7 @@
                 @autocomplete([
                     'label'=>__('vialer::vialer.Carrer'), 
                     'containerclass'=>'inputVia',
-                    // 'outlined'=>false,
+                    'placeholder'=>$placeholder,
                     'name'=>$name.'[via][codi]',
                     'id'=>$name.'-via-codi',
                     'multiple'=> false,
