@@ -4,6 +4,14 @@
         border-width: 0px;
         margin-bottom: 0;
         border-bottom-width: 1px;
+        
+        &.readonly{
+            background-color:transparent;
+        }
+        &.focused{
+            box-shadow:none;
+            background: transparent;
+        }
     }
 
      label{
@@ -12,10 +20,7 @@
         overflow: hidden;
     }
 
-     .form-group.focused{
-        box-shadow:none;
-        background: transparent;
-    }
+    
 
     .vialer-map{
         min-height:300px;
@@ -88,7 +93,7 @@ table.sticky-header {
         overflow: hidden;
         padding-left:0 !important;
     }
-
+    
     .form-group .form-control{
         padding-left:0 !important;
     }
