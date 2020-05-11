@@ -34,7 +34,17 @@ if (! function_exists('vialerFormControl')) {
 if (! function_exists('cadenaDomicili')) {
 	function cadenaDomicili($domicili, $provinciaimun=false){
 		$ret=[];
-		$ret[]=$domicili->nomVia();
+		// $ret[]=$domicili->nomVia();
+
+		if(isset($domicili->rustic) && $domicili->rustic){
+            $ret[]=$domicili->via->nombreVia;
+        }else{
+            if(isset($domicili->viaAccede) && $domicili->viaAccede){
+                $ret[]= $domicili->viaAccede->codigoTipoVia." ".$domicili->viaAccede->nombreLargoVia;
+            }else{
+                $ret[]= $domicili->via? ($domicili->via->tipoVia." ".$domicili->via->nombreVia): "";
+            }
+        }
 		if($domicili->numero) $ret[]=$domicili->numero;
 		if($domicili->letra) $ret[]=$domicili->letra;
 		if($domicili->escalera) $ret[]="ESC: ".$domicili->escalera;
