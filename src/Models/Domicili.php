@@ -168,16 +168,7 @@ class Domicili extends ModelCatastro{
 
 
     public function cadenaDomicili(){
-        $ret=[];
-        $ret[]=$this->nomVia();
-        if($this->numero) $ret[]=$this->numero;
-        if($this->letra) $ret[]=$this->letra;
-        if($this->escalera) $ret[]="ESC: ".$this->escalera;
-        if($this->bloque) $ret[]="BLQ: ".$this->bloque;
-        if($this->planta) $ret[]="PLNT: ".$this->planta;
-        if($this->puerta) $ret[]="PRT: ".$this->puerta;
-        if($this->codigo_postal) $ret[]="CP: ".$this->codigo_postal;
-        return implode(" ",$ret);
+       return cadenaDomicili($this);
     }
 
 

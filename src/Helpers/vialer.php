@@ -31,4 +31,20 @@ if (! function_exists('vialerFormControl')) {
 		return $renderer->render();
 	}
 }
+if (! function_exists('cadenaDomicili')) {
+	function cadenaDomicili($domicili, $provinciaimun=false){
+		$ret=[];
+		$ret[]=$domicili->nomVia();
+		if($domicili->numero) $ret[]=$domicili->numero;
+		if($domicili->letra) $ret[]=$domicili->letra;
+		if($domicili->escalera) $ret[]="ESC: ".$domicili->escalera;
+		if($domicili->bloque) $ret[]="BLQ: ".$domicili->bloque;
+		if($domicili->planta) $ret[]="PLNT: ".$domicili->planta;
+		if($domicili->puerta) $ret[]="PRT: ".$domicili->puerta;
+		if($domicili->codigo_postal) $ret[]="CP: ".$domicili->codigo_postal;
+		if($provinciaimun && $domicili->provincia) $ret[]=$domicili->provincia ??'';
+		if($provinciaimun && $domicili->municipi) $ret[]=$domicili->municipi ??'';
+		return implode(" ",$ret);
+	}
+}
 
