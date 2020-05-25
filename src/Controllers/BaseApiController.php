@@ -2,7 +2,7 @@
 
 namespace Ajtarragona\Vialer\Controllers; 
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 
 use Ajtarragona\Accede\Exceptions\AccedeErrorException;

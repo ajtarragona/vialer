@@ -184,4 +184,46 @@ class Domicili extends ModelCatastro{
         }
     }
 
+
+    public function toArray(){
+        $via=[
+            "tipus"=> "",
+            "nom"=>"",
+            "codi"=>""
+        ];
+        if($this->viaAccede){
+            $via=[
+                "tipus"=> $this->viaAccede->codigoTipoVia,
+                "nom"=> $this->viaAccede->nombreLargoVia,
+                "codi"=> $this->viaAccede->codigoIneVia
+            ];
+        }else if($this->via){
+            $via=[
+                "tipus"=> $this->via->tipoVia,
+                "nom"=> $this->via->nombreVia,
+                "codi"=> $this->via->codigoVia
+            ];
+        }
+        return[
+             "via"=> $via,
+             "numero"=> $this->numero,
+             "lletra"=> $this->letra,
+             "escala"=>$this->escalera,
+             "bloc"=>$this->bloque,
+             "planta"=> $this->planta,
+             "porta"=> $this->puerta,
+             "codi_postal"=>$this->codigo_postal,
+             "provincia"=> $this->provincia,
+             "municipi"=>$this->municipi,
+             "districte"=>$this->districte,
+             "seccio"=>$this->seccio,
+             "districte_administratiu"=>$this->districte_administratiu,
+             "refcat"=> $this->rc->completa,
+             "location"=>[
+                 "lat"=> $this->xy->lat,
+                 "lng"=>$this->xy->lng
+             ]
+        ];
+    }
+
 }
