@@ -42,5 +42,8 @@ return [
         <p>No introdueixis el tipus de carrer a la cerca: les paraules carrer, rambla, plaça, etc.</p>
         <p>Només es busca a partir dels camps carrer, numero, escala, pis i porta. La resta els pots emplenar però no es faran servir per buscar.</p>
         <p>Mira de no afinar tant la búqueda. Per exemple, busca només per número i ja triaras el pis i porta d'entre els resultats mostrats.</p>
-        <p>Quan triis un domicili, s'emplenaran la resta de camps automàticament.</p>"
+        <p>Quan triis un domicili, s'emplenaran la resta de camps automàticament.</p>",
+    "Error" => "Error",
+    "Error desconegut"  => "Error desconegut",
+    "No s'ha pogut connectar amb el servei web del Catastre" => "No s'ha pogut connectar amb el servei web del Catastre"
 ];

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Catastro;
 use Vialer; //facade
 use Exception;
+use SoapFault;
 
 class VialerController extends BaseController{
 	
@@ -27,57 +28,64 @@ class VialerController extends BaseController{
 		$domicilis=collect();
 		// dd($request->all());
 		$args=compact('type');
+		try{
+			switch($type){
+				case "via":
+					if($request->via["codi"]){
+						$via = Catastro::getVia($request->via["codi"]);
+						
+						$viaAccede = Vialer::getVia($request->via["codi"]);
+						
+						if(!$via){
+							$via=new Via($request->via["codi"],$request->via["tipus"],$request->via["nom"]);
 
-		switch($type){
-			case "via":
-				if($request->via["codi"]){
-					$via = Catastro::getVia($request->via["codi"]);
-					
-					$viaAccede = Vialer::getVia($request->via["codi"]);
-					
-					if(!$via){
-						$via=new Via($request->via["codi"],$request->via["tipus"],$request->via["nom"]);
+						}
+						// dump($via);
+						if($via){
+							$domicilis = $via->getDomicilis($request->numero ?? "0000",[
+									"Bloque"=>$request->bloc,
+									"Escalera"=>$request->escala, 
+									"Planta"=>$request->planta, 
+									"Puerta"=>$request->porta
+								],
+								$viaAccede
+							);
 
+						}
+						$args["codivia"]=$via->codigoVia;
+						$args["nomvia"]=$viaAccede?($viaAccede->codigoTipoVia ." ". $viaAccede->nombreLargoVia):($via->tipoVia." ".$via->nombreVia);
+						$args["numero"]=$request->numero;
+						$args["bloc"]=$request->bloc;
+						$args["escala"]=$request->escala;
+						$args["planta"]=$request->planta;
+						$args["porta"]=$request->porta;
 					}
-					// dump($via);
-					if($via){
-						$domicilis = $via->getDomicilis($request->numero ?? "0000",[
-								"Bloque"=>$request->bloc,
-								"Escalera"=>$request->escala, 
-								"Planta"=>$request->planta, 
-								"Puerta"=>$request->porta
-							],
-							$viaAccede
-						);
-
+					break;
+				case "refcat":
+					$ret=Catastro::consultaDomiliciosPorRC($request->refcat);
+					if($ret instanceof Domicili){
+						$domicilis->push($ret);
+					}else{
+						$domicilis = $ret;
 					}
-					$args["codivia"]=$via->codigoVia;
-					$args["nomvia"]=$viaAccede?($viaAccede->codigoTipoVia ." ". $viaAccede->nombreLargoVia):($via->tipoVia." ".$via->nombreVia);
-					$args["numero"]=$request->numero;
-					$args["bloc"]=$request->bloc;
-					$args["escala"]=$request->escala;
-					$args["planta"]=$request->planta;
-					$args["porta"]=$request->porta;
-				}
-				break;
-			case "refcat":
-				$ret=Catastro::consultaDomiliciosPorRC($request->refcat);
-				if($ret instanceof Domicili){
-					$domicilis->push($ret);
-				}else{
-					$domicilis = $ret;
-				}
-				break;
-			case "location":
-				$domicilis=Catastro::consultaDomiciliosPorXY($request->location["lat"], $request->location["lng"]);
+					break;
+				case "location":
+					$domicilis=Catastro::consultaDomiciliosPorXY($request->location["lat"], $request->location["lng"]);
 
-				break;
-			default:break;
+					break;
+				default:break;
+			}
+			$args["domicilis"] = $domicilis;
+
+			return $this->view('modal.modalsearch', $args);
+		}catch(SoapFault  $e){
+			// dd($e);
+			return $this->view('modal.modalerror', ["error"=>__("vialer::vialer.No s'ha pogut connectar amb el servei web del Catastre")]);
+			// return "Error";
+		}catch(Exception  $e){
+			return $this->view('modal.modalerror');
+			// return "Error";
 		}
-		$args["domicilis"] = $domicilis;
-
-		return $this->view('modal.modalsearch', $args);
-
 	}
 
 	public function veureParcela($refcat){

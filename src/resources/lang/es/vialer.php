@@ -42,5 +42,8 @@ return [
         <p>No introduzcas el tipo de calle a la búsqueda: las palabras calle, plaza, rambla, etc.</p>
         <p>Solo se busca a partir de los campos calle, número, escalera, planta y puerta. El resto los puedes rellenar pero no se usarán en la búsqueda.</p>
         <p>Intenta no afinar demasiado la búsqueda. Por ejemplo, busca solo por número y ya elegirás la planta y puerta de entre las opciones mostradas.</p>
-        <p>Cuando elijas un domicilio, se rellenarán el resto de campos automáticamente.</p>"
+        <p>Cuando elijas un domicilio, se rellenarán el resto de campos automáticamente.</p>",
+    "Error" => "Error",
+    "Error desconegut"  => "Error desconocido",
+    "No s'ha pogut connectar amb el servei web del Catastre" => "No se ha podido conectar con el servicio web de Catastro"
 ];
