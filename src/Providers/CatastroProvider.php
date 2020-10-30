@@ -15,9 +15,9 @@ use Exception;
 class CatastroProvider{
   
     use CanReturnCached;
-
-    protected $wsdl_calle="https://ovc.catastro.meh.es/ovcservweb/ovcswlocalizacionrc/ovccallejero.asmx?WSDL";
-    protected $wsdl_callecodigo="https://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx?WSDL";
+    
+    protected $wsdl_calle="http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejero.asmx?WSDL";
+    protected $wsdl_callecodigo="http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx?WSDL";
     protected $wsdl_coord="http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx?WSDL";
     
     
@@ -119,7 +119,6 @@ class CatastroProvider{
             "Puerta" => "",
         ],$partes);
 
-
         $hash=$this->getHash('consultaDomiciliosPorVia', [$codigoVia, $numero, $partes, $codigoProvincia, $codigoMunicipio, $codigoMunicipioIne]);
         
         if(!$codigoVia) return null;
@@ -140,6 +139,7 @@ class CatastroProvider{
             
             //retorno rc, via y xy 
             $domicilis = Domicili::fromResponse($results);
+            // dd($domicilis);
             return $domicilis;
         });
     }
@@ -152,16 +152,18 @@ class CatastroProvider{
      */
     public function consultaDomiliciosPorRC($rc){
         $hash=$this->getHash('consultaDomiliciosPorRC', [$rc]);
-        // dump($rc);
+        // dd($rc);
 		return $this->returnCached($hash, function() use ($rc){
             $results=$this->callejero()->Consulta_DNPRC(
                 $provincia ?? '', 
                 $municipio ?? '',  
                 $rc 
             );
+            // dd($results);
             // dd(ModelCatastro::fromResponse($results));
-            
+            // dump($results);
             $ret=Domicili::fromResponse($results);
+            dd($ret);
             if($ret && $ret->count()>0){
                 if(strlen($rc)==20) return $ret->first();
                 else return $ret;
@@ -194,7 +196,7 @@ class CatastroProvider{
      */
     public function consultaXYporRC($rc, $srs=null, $provincia = null, $municipio=null){
         $hash=$this->getHash('consultaXYporRC', [$rc, $srs, $provincia , $municipio]);
-        
+        // dd($rc);
 		return $this->returnCached($hash, function() use ($rc, $srs, $provincia , $municipio){
             $results=$this->coordenadas()->Consulta_CPMRC(
                 $provincia ?? '', 
@@ -202,6 +204,7 @@ class CatastroProvider{
                 $srs ?? $this->srs, 
                 $rc
             );
+            // dd($results);
             return Coordenades::fromResponse($results);
         });
 

@@ -31,8 +31,10 @@ class Domicili extends ModelCatastro{
     public static function fromObject($object, $xy=false){
         $ret= new static;
         $ret->rc=ReferenciaCatastral::fromObject($object->rc);
+        
         if($xy){
             $ret->xy=Catastro::consultaXYporRC($ret->rc->parcela);
+            // dd($ret);
             $dissec=districtes()->getDistricteISeccio($ret->xy->lat, $ret->xy->lng);
             if($dissec){
                 $ret->districte=$dissec->districte;
@@ -122,7 +124,7 @@ class Domicili extends ModelCatastro{
 
     public static function fromResponse($response){
         $xml=parent::fromResponse($response);
-        // dd($xml);
+        
         if($xml){
             if(isset($xml->lrcdnp)){
                 //hay varias
@@ -142,6 +144,7 @@ class Domicili extends ModelCatastro{
                 //hay solo una
                 // dd($xml->bico);
                 $tmp= to_object($xml->bico)->bi;
+                // dd($tmp);
                 $tmp->rc=$tmp->idbi->rc;
                 $ret=collect();
                 $ret->push(self::fromObject($tmp, true));

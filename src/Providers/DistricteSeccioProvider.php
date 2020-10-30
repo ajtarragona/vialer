@@ -44,11 +44,12 @@ class DistricteSeccioProvider{
 
 		return $this->returnCached($hash, function() use ($lat,$lng){
             
-            // dump($this->ds_url);
+            // dd($this->ds_url);
             $this->client = new Client([
                 'base_uri' => $this->ds_url,
                 'verify' =>false
             ]);
+            // dd($this->client);
             $args=[
                 "geometry" => $lng.",".$lat,
                 "geometryType" => "esriGeometryPoint",
@@ -65,6 +66,7 @@ class DistricteSeccioProvider{
                     'Accept'     => 'application/json'
                 ]
             ]);
+            dd($response);
 
             // dump($response);
             // dump("STATUS:".$response->getStatusCode());
