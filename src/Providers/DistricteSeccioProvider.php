@@ -66,7 +66,7 @@ class DistricteSeccioProvider{
                     'Accept'     => 'application/json'
                 ]
             ]);
-            dd($response);
+            // dd($response);
 
             // dump($response);
             // dump("STATUS:".$response->getStatusCode());
