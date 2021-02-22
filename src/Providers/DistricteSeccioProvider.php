@@ -6,7 +6,7 @@ use Ajtarragona\Vialer\Traits\CanReturnCached;
 
 use Illuminate\Support\Str;
 
-use Log;
+use Illuminate\Support\Facades\Log;
 use Exception;
 
 use GuzzleHttp\Client;
@@ -85,6 +85,7 @@ class DistricteSeccioProvider{
                 }
                 return null;
             }catch(Exception $e){
+                Log::debug("Error recuperant districte i seccio:". $e->getMessage());
                 return null;
             }
         });
