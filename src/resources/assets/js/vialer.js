@@ -247,7 +247,7 @@
   
       _create: function() {
           var o=this;
-          al("vialerField", o.element);
+          // al("vialerField", o.element);
           this.options = $.extend({}, this.options, this.element.data()); 
           this.name = this.element.find('input.vialer-value');
           this.inputs=this.element.find('input');
@@ -278,7 +278,7 @@
           });
   
           this.inputVia.on('tgnautocomplete:change',function(e, ret){
-              al("chained autocomplete changed");
+              // al("chained autocomplete changed");
               //al('selected', ret.item);
   
               o._setFieldValue('via.tipus',ret.item.tipusVia);
@@ -545,7 +545,7 @@
           //al("Update");
           var o=this;
           o._updateValue();
-          al('trigger changed',o.element);
+          // al('trigger changed',o.element);
           o.element.trigger("changed", o);
           
       },
