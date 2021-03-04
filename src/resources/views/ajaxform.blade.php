@@ -15,7 +15,7 @@
         <div class="row pt-3 justify-content-center">
             <div class="col-sm-4 ">  
                 @vialerFormControl([
-                    'name'=>'vialer1',
+                    'name'=>'vialer1[23]',
                     'class' => 'mb-3',
                     'color'=>'info',
                     'label' => 'mierda',

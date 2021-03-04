@@ -70,7 +70,10 @@ class VialerRenderer{
         $value=$this->options["value"];
         $this->options["value"] = to_object(array_merge($this->default_domicili, (($value && is_array($value))?$value:[]) ) );
         
-        if(!$this->options["id"]) $this->options["id"] = Str::snake($this->options["name"]);
+        $id = (isset($this->options["id"]) &&  $this->options["id"]) ? $this->options["id"] : $this->options["name"];
+        $id = preg_replace('/[^ a-zA-Z0-9-_\.]/', '_', $id);
+        $this->options["id"]=$id;
+        // if(!$this->options["id"]) $this->options["id"] = Str::snake($this->options["name"]);
         // dd($this);
 
         $this->options['class'].= " vialer-field map-". $this->options["map_position"];

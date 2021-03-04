@@ -1,6 +1,6 @@
 <div class="card-header">
     @tabs(['align'=>'center','align'=>'left','class'=>'card-header-tabs'])
-        @tab(['href'=>'#tab-via-'.$name,'active'=>true, 'persist'=>$name.'-vialer-tab'])
+        @tab(['href'=>'#tab-via-'.$id,'active'=>true, 'persist'=>$id.'-vialer-tab'])
             @if($icon)
                 @icon($icon) 
             @endif
@@ -12,12 +12,12 @@
 
         @endtab
         @if($show_refcat)
-            @tab(['href'=>'#tab-refcat-'.$name, 'persist'=>$name.'-vialer-tab'])
+            @tab(['href'=>'#tab-refcat-'.$id, 'persist'=>$id.'-vialer-tab'])
                 @lang("vialer::vialer.Ref.Cat.")
             @endtab
         @endif
         @if($show_xy)
-            @tab(['href'=>'#tab-xy-'.$name, 'persist'=>$name.'-vialer-tab'])
+            @tab(['href'=>'#tab-xy-'.$id, 'persist'=>$id.'-vialer-tab'])
                 @lang("vialer::vialer.Lat/Lng")
             @endtab
         @endif
