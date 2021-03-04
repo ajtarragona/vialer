@@ -157,10 +157,11 @@
     },
   
     deleteMarker : function(){
+      var o=this;
       if(this.marker){
         this.marker.setMap(null);
         this.marker=null;
-        this.element.trigger("vialermap:deleted", this);
+        this.element.trigger("vialermap:markerdeleted", this);
       }
     },
   
@@ -219,7 +220,7 @@
   
         this.marker.addListener('dragend', function() {
           // al("marker drooped");
-          o.element.trigger("vialermap:changed", o);
+          o.element.trigger("vialermap:markerchanged", o);
         });
   
         this.marker.addListener('rightclick', function(point) {
@@ -277,7 +278,7 @@
           });
   
           this.inputVia.on('tgnautocomplete:change',function(e, ret){
-              // al("chained autocomplete changed");
+              al("chained autocomplete changed");
               //al('selected', ret.item);
   
               o._setFieldValue('via.tipus',ret.item.tipusVia);
@@ -305,14 +306,14 @@
   
           this.map.vialerMap();
   
-          this.map.on('vialermap:changed',function(e,map){
+          this.map.on('vialermap:markerchanged',function(e,map){
             var pos=map.getMarkerPosition();
             o._setFieldValue('location.lat',pos.lat());
             o._setFieldValue('location.lng',pos.lng());
             o._update();
           });
   
-          this.map.on('vialermap:deleted',function(e,map){
+          this.map.on('vialermap:markerdeleted',function(e,map){
             o._setFieldValue('location.lat','');
             o._setFieldValue('location.lng','');
             o._update();
@@ -320,11 +321,13 @@
   
           // this.map.vialerMap('sayhello','hello','world');
   
-          this._update();
+          this._updateValue();
   
          
       },
   
+      
+      
       _initMap: function(){
           
       },
@@ -530,13 +533,21 @@
       _isReadonly : function(){
         return this.options.readonly || this.options.disabled;
       },
-      _update: function(){
-          //al("Update");
-          var o=this;
+
+      _updateValue: function(){
+         var o=this;
           var json= o._toJson();
           o.element.find('#'+o.options.name+'-value').html(json);
           o._updateMapMarker();
           o._updateParcela();
+      },
+      _update: function(){
+          //al("Update");
+          var o=this;
+          o._updateValue();
+          al('trigger changed',o.element);
+          o.element.trigger("changed", o);
+          
       },
   
       _updateParcela: function(){
@@ -561,17 +572,6 @@
               o.markerButton.prop('disabled',false).removeClass('disabled');
           }
       }
-  });
-  
-  
-  
-  onDocumentReady = function (callback){
-      document.addEventListener('DOMContentLoaded', callback );
-  }
-  
-  
-  onDocumentReady(function(){
-      $('.vialer-field').vialerField();
   });
   
   

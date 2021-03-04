@@ -91,14 +91,23 @@
 
 @section('js')
     <script src="{{ asset('vendor/ajtarragona/js/vialer.js')}}" language="JavaScript"></script>
-    {{-- <script language="JavaScript">
-        @include('vialer::_script')
-    </script> --}}
+    <script language="JavaScript">
+        
+        onDocumentReady = function (callback){
+            document.addEventListener('DOMContentLoaded', callback );
+        }
+        
+        
+        onDocumentReady(function(){
+            $('.vialer-field').vialerField();
+        });
+    </script>
 @endsection
 
 
 @section('css')
     <link href="{{ asset('vendor/ajtarragona/css/vialer.css') }}" rel="stylesheet">
+
 
     {{-- <style>
         @include('vialer::_style')
