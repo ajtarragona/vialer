@@ -539,11 +539,11 @@
 
       _value: function(){
           var fields=this.element.closest('form').serializeControls();
-          al('_value', fields);
+          // al('_value', fields);
           var fieldname=this.options.name.replaceAll('[','.').replaceAll(']','');
-          al(fieldname);
+          // al(fieldname);
           var ret= this._data_get(fields,fieldname);
-          al(ret);
+          // al(ret);
           return ret;
       },
   
