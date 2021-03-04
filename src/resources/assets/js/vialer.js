@@ -525,9 +525,26 @@
       _toJson: function(){
          return JSON.stringify(this._value(),undefined,4);
       },
+
+      _data_get: function (obj,string){
+        var parts = string.split('.');
+        var newObj = obj[parts[0]];
+        if(parts[1]){
+            parts.splice(0,1);
+            var newString = parts.join('.');
+            return this._data_get(newObj,newString);
+        }
+        return newObj;
+      },
+
       _value: function(){
           var fields=this.element.closest('form').serializeControls();
-          return fields[this.options.name];
+          // al('_value', fields);
+          var fieldname=this.options.name.replace('[','.').replace(']','');
+          // al(fieldname);
+          var ret= this._data_get(fields,fieldname);
+          // al(ret);
+          return ret;
       },
   
       _isReadonly : function(){
