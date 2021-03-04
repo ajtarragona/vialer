@@ -298,8 +298,8 @@
           this.markerButton.on('click',function(e){
             o.map.vialerMap('addMarker');
             var pos=o.map.vialerMap('getMarkerPosition');
-            o._setFieldValue('location.lat',pos.lat()??'');
-            o._setFieldValue('location.lng',pos.lng()??'');
+            o._setFieldValue('location.lat',pos.lat());
+            o._setFieldValue('location.lng',pos.lng());
             o._update();
           });
   
@@ -307,8 +307,8 @@
   
           this.map.on('vialermap:changed',function(e,map){
             var pos=map.getMarkerPosition();
-            o._setFieldValue('location.lat',pos.lat()??'');
-            o._setFieldValue('location.lng',pos.lng()??'');
+            o._setFieldValue('location.lat',pos.lat());
+            o._setFieldValue('location.lng',pos.lng());
             o._update();
           });
   

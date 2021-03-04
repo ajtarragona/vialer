@@ -36,6 +36,7 @@ class Domicili extends ModelCatastro{
             $ret->xy=Catastro::consultaXYporRC($ret->rc->parcela);
             // dd($ret);
             $dissec=districtes()->getDistricteISeccio($ret->xy->lat, $ret->xy->lng);
+            // dd($dissec);
             if($dissec){
                 $ret->districte=$dissec->districte;
                 $ret->seccio=$dissec->seccio;

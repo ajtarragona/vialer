@@ -69,10 +69,11 @@ class DistricteSeccioProvider{
                 ]);
                 // dd($response);
 
-                // dump($response);
+                dump($response);
                 // dump("STATUS:".$response->getStatusCode());
                 // Log::debug("BODY:");
                 $body = json_decode($response->getBody());
+                dump($body);
                 $ret = (isset($body->features) && is_array($body->features) && $body->features )  ? $body->features[0]->attributes : null;
 
                 if($ret){
@@ -85,6 +86,7 @@ class DistricteSeccioProvider{
                 }
                 return null;
             }catch(Exception $e){
+                // dd($e);
                 Log::debug("Error recuperant districte i seccio:". $e->getMessage());
                 return null;
             }
