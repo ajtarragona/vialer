@@ -69,11 +69,11 @@ class DistricteSeccioProvider{
                 ]);
                 // dd($response);
 
-                dump($response);
+                // dump($response);
                 // dump("STATUS:".$response->getStatusCode());
                 // Log::debug("BODY:");
                 $body = json_decode($response->getBody());
-                dump($body);
+                // dump($body);
                 $ret = (isset($body->features) && is_array($body->features) && $body->features )  ? $body->features[0]->attributes : null;
 
                 if($ret){
