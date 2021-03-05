@@ -62,7 +62,7 @@ class DistricteSeccioProvider{
                 
                 $response = $this->client->request("get", "query", [
                     'query' => $args,
-                    'timeout' => 5,
+                    'timeout' => 3,
                     'headers' => [
                         'Accept'     => 'application/json'
                     ]
