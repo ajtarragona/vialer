@@ -39,8 +39,8 @@ if (! function_exists('cadenaDomicili')) {
 		if(isset($domicili->rustic) && $domicili->rustic){
             $ret[]=$domicili->via->nombreVia;
         }else{
-            if(isset($domicili->viaAccede) && $domicili->viaAccede){
-                $ret[]= $domicili->viaAccede->codigoTipoVia." ".$domicili->viaAccede->nombreLargoVia;
+            if(isset($domicili->viaIris) && $domicili->viaIris){
+                $ret[]= $domicili->viaIris->acronym." ".$domicili->viaIris->stname;
             }else{
                 $ret[]= $domicili->via? ($domicili->via->tipoVia." ".$domicili->via->nombreVia): "";
             }

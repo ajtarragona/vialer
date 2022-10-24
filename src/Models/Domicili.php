@@ -11,7 +11,7 @@ class Domicili extends ModelCatastro{
    
     public $rc;
     public $via;
-    public $viaAccede;
+    public $viaIris;
     public $numero;
     public $letra;
     public $escalera;
@@ -64,10 +64,10 @@ class Domicili extends ModelCatastro{
                 if(isset($locs->lourb)){
                     $ret->via=Via::fromObject($locs->lourb->dir);
                     try{
-                        $ret->viaAccede=Vialer::getVia($ret->via->codigoVia, $dt->loine->cp, $dt->loine->cm);
+                        $ret->viaIris=Vialer::getVia($ret->via->codigoVia, $dt->loine->cp, $dt->loine->cm);
                         // dd($ret);
                     }catch(Exception $e){
-                        $ret->viaAccede=null;
+                        $ret->viaIris=null;
                         // dd($e);
                     }
                     
@@ -180,8 +180,8 @@ class Domicili extends ModelCatastro{
         if($this->rustic){
             return $this->via->nombreVia;
         }else{
-            if($this->viaAccede){
-                return $this->viaAccede->codigoTipoVia." ".$this->viaAccede->nombreLargoVia;
+            if($this->viaIris){
+                return $this->viaIris->acronym." ".$this->viaIris->stname;
             }else{
                 return $this->via? ($this->via->tipoVia." ".$this->via->nombreVia): "";
             }
@@ -195,11 +195,11 @@ class Domicili extends ModelCatastro{
             "nom"=>"",
             "codi"=>""
         ];
-        if($this->viaAccede){
+        if($this->viaIris){
             $via=[
-                "tipus"=> $this->viaAccede->codigoTipoVia,
-                "nom"=> $this->viaAccede->nombreLargoVia,
-                "codi"=> $this->viaAccede->codigoIneVia
+                "tipus"=> $this->viaIris->acronym,
+                "nom"=> $this->viaIris->stname,
+                "codi"=> $this->viaIris->code
             ];
         }else if($this->via){
             $via=[

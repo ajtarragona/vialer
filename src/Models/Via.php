@@ -54,7 +54,7 @@ class Via extends ModelCatastro{
 
 
 
-    public function getDomicilis($numero, $parts=[], $viaAccede=null){
+    public function getDomicilis($numero, $parts=[], $viaIris=null){
         $domicilis=Catastro::consultaDomiciliosPorVia(
             $this->codigoVia, 
             $numero, 
@@ -65,7 +65,7 @@ class Via extends ModelCatastro{
         if($domicilis){
             foreach($domicilis as $domicili){
                 if(!isset($domicili->via) || !$domicili->via) $domicili->via=$this;
-                if(!isset($domicili->viaAccede) || !$domicili->viaAccede) $domicili->viaAccede=$viaAccede;
+                if(!isset($domicili->viaIris) || !$domicili->viaIris) $domicili->viaIris=$viaIris;
             }
         }
         // dd($domicilis);

@@ -44,8 +44,8 @@ Això copiarà l'arxiu a `config/vialer.php`.
 Es proporcionen 3 Providers:
 
 ### VialerProvider
-Simplement és una capa sobre el paquet accede-client.
-Podeu consultar els mètodes i la configuració a la web del paquet [accede-client](https://github.com/ajtarragona/accede-client). 
+Simplement és una capa sobre el paquet tsystems-client.
+Podeu consultar els mètodes i la configuració a la web del paquet [tsystems-client](https://github.com/ajtarragona/tsystems-client). 
 
 Proporciona com a extra que totes les consultes es guarden a cache durant una hora.
 

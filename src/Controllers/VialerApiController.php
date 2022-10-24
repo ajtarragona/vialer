@@ -141,8 +141,9 @@ class VialerApiController extends BaseApiController{
 			
 			$ret=[];
 			if($vies){
+				
 				foreach($vies as $via){
-					$ret[] = ["value"=>$via->codigoIneVia, "name"=>$via->codigoTipoVia." ".$via->nombreLargoVia, "tipusVia" => $via->codigoTipoVia ,"nomLlarg" => $via->nombreLargoVia, "nomCurt" => $via->nombreVia];
+					$ret[] = ["value"=>$via->code, "name"=>$via->acronym." ".$via->stname, "tipusVia" => $via->acronym ,"nomLlarg" => $via->stname, "nomCurt" => $via->stname];
 				}
 			}
 		    return response()->json($ret);

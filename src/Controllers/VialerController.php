@@ -34,7 +34,7 @@ class VialerController extends BaseController{
 					if($request->via["codi"]){
 						$via = Catastro::getVia($request->via["codi"]);
 						
-						$viaAccede = Vialer::getVia($request->via["codi"]);
+						$viaIris = Vialer::getVia($request->via["codi"]);
 						
 						if(!$via){
 							$via=new Via($request->via["codi"],$request->via["tipus"],$request->via["nom"]);
@@ -48,12 +48,12 @@ class VialerController extends BaseController{
 									"Planta"=>$request->planta, 
 									"Puerta"=>$request->porta
 								],
-								$viaAccede
+								$viaIris
 							);
 
 						}
 						$args["codivia"]=$via->codigoVia;
-						$args["nomvia"]=$viaAccede?($viaAccede->codigoTipoVia ." ". $viaAccede->nombreLargoVia):($via->tipoVia." ".$via->nombreVia);
+						$args["nomvia"]=$viaIris?($viaIris->acronym ." ". $viaIris->stname):($via->tipoVia." ".$via->nombreVia);
 						$args["numero"]=$request->numero;
 						$args["bloc"]=$request->bloc;
 						$args["escala"]=$request->escala;
@@ -171,128 +171,6 @@ class VialerController extends BaseController{
 	// 	];
 	// }
 
-
-// 	public function home(){
-		
-// 		// $this->setFilter(null);
-// 		$filter = $this->getFilter();
-// 		// dd($filter);
-// 		$via=null;
-// 		$viaAccede=null;
-// 		$domicilis=null;
-// 		$domicili=null;
-
-		
-// 		if($filter->search_type=='clear'){
-// 			$filter=$this->setFilter(null);
-			
-// 		}else if( $filter->search_type == 'rc' || $filter->search_type=='xy' ){
-			
-// 			if($filter->search_type=='xy'){
-// 				$domicilis=Catastro::consultaDomiciliosPorXY($filter->lat, $filter->lng);
-// 			}else{
-// 				$domicilis=Catastro::consultaDomiliciosPorRC($filter->rc);
-// 				if($domicilis instanceof Domicili){
-// 					return redirect()->route('vialer.domicili',['rc'=>$filter->rc]);
-					
-// 				}
-					
-// 			}
-	
-
-// 			if($domicilis){
-// 				// dd($domicilis);
-// 				// $primer=$domicilis->first();				
-// 				// $filter->codiVia = $primer->via->codigoVia;
-// 				// $filter->numero = $primer->numero;
-				
-// 				// $filter->nomVia = $viaAccede->codigoTipoVia." ".$viaAccede->nombreLargoVia;
-// 			}
-
-
-// 			if($domicili){
-// 				$filter->rc = $domicili->rc->completa;
-// 				$filter->lletra = $domicili->letra;
-// 				$filter->bloc = $domicili->bloque;
-// 				$filter->escala = $domicili->escalera;
-// 				$filter->planta = $domicili->planta;
-// 				$filter->porta = $domicili->puerta;
-// 				$filter->lat = $domicili->xy->lat;
-// 				$filter->lng = $domicili->xy->lng;
-// 				$filter->codi_postal = $domicili->codigo_postal;	
-// 				$filter->codiVia = $domicili->via->codigoVia;
-// 				$filter->numero = $domicili->numero;
-// 				// $viaAccede = Vialer::getVia($filter->codiVia);
-// 				$filter->nomVia = $domicili->viaAccede->codigoTipoVia." ".$domicili->viaAccede->nombreLargoVia;
-// 			}
-
-// 		}elseif($filter->search_type=='via'){
-// 			if($filter->codiVia){
-// 				$via = Catastro::getVia($filter->codiVia);
-// 				$viaAccede = Vialer::getVia($filter->codiVia);
-// 				$filter->nomVia = $viaAccede->codigoTipoVia." ".$viaAccede->nombreLargoVia;
-			
-// 				$domicilis = $via->getDomicilis($filter->numero ?? "0000",[
-// 						"Bloque"=>$filter->bloc,
-// 						"Escalera"=>$filter->escala, 
-// 						"Planta"=>$filter->planta, 
-// 						"Puerta"=>$filter->porta
-// 					],
-// 					$viaAccede
-// 				);
-// 			}
-// 			// die();
-// 		} 
-		
-// // dd($filter);
-// 		$args=compact('via','viaAccede','filter','domicilis','domicili','defaultValue');
-
-// 		return $this->view('home', $args);
-// 	}
-
-
-
-// 	public function domicili($rc,Request $request){
-// 		$domicili=Catastro::consultaDomiliciosPorRC($rc);
-				
-// 		if($domicili instanceof Domicili){
-// 			$filter = $this->getFilter();
-// 			$filter->rc = $domicili->rc->completa;
-// 			$filter->lletra = $domicili->letra;
-// 			$filter->bloc = $domicili->bloque;
-// 			$filter->escala = $domicili->escalera;
-// 			$filter->planta = $domicili->planta;
-// 			$filter->porta = $domicili->puerta;
-// 			$filter->lat = $domicili->xy->lat;
-// 			$filter->lng = $domicili->xy->lng;
-// 			$filter->codi_postal = $domicili->codigo_postal;	
-// 			$filter->codiVia = $domicili->via->codigoVia;
-// 			$filter->numero = $domicili->numero;
-// 			// $viaAccede = Vialer::getVia($filter->codiVia);
-// 			$filter->nomVia = $domicili->viaAccede->codigoTipoVia." ".$domicili->viaAccede->nombreLargoVia;
-			
-// 			return $this->view('domicili', compact('domicili','filter'));
-// 		}else{
-// 			$this->setFilter([
-// 				"rc"=> $rc,
-// 				"search_type"=> 'rc'
-// 			]);
-				
-// 			return redirect()->route('vialer.home');
-// 		}
-// 	}
-
-// 	public function search(Request $request){
-// 		dd($request->all());
-// 		$this->setFilter($this->filterFromRequest($request));
-
-// 		return redirect()->route('vialer.home');
-// 		// dump($request->rc);
-// 		// dd($request->all());
-
-		
-		
-// 	}
 
 	
 }

@@ -15,9 +15,9 @@
         <div class="row pt-3 justify-content-center">
             <div class="col-sm-4 ">  
                 @vialerFormControl([
-                    'name'=>'field[0][value]',
+                    'name'=>'carrer',
                     'class' => 'mb-3',
-                    'color'=>'info',
+                    // 'color'=>'info',
                     'label' => 'mierda',
                     'icon' => 'map-marker',
                     'helptext' => 'Lalafd lfd lfdlf',

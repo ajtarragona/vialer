@@ -14,7 +14,7 @@
     "require": {
         "php": ">=7.0.0",
         "laravel/framework": "^6.0",
-        "ajtarragona/accede-client": "dev-master",
+        "ajtarragona/tsystems-client": "dev-main",
         "opis/closure": "^3.5"
     },
     "autoload": {

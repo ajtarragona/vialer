@@ -462,14 +462,14 @@
                   modal.modal('hide');
                   row.stopLoading();
                   
-                  if(domicili.viaAccede){
+                  if(domicili.viaIris){
                     o.inputVia.tgnAutocomplete('value',{
-                      value: domicili.viaAccede.codigoIneVia, 
-                      name: (domicili.viaAccede.codigoTipoVia+' '+domicili.viaAccede.nombreLargoVia)
+                      value: domicili.viaIris.code, 
+                      name: (domicili.viaIris.acronym+' '+domicili.viaIris.stname)
                     });
-                    o._setFieldValue("via.tipus", domicili.viaAccede.codigoTipoVia);
-                    o._setFieldValue("via.nom", domicili.viaAccede.nombreLargoVia);
-                    o._setFieldValue("via.codi", domicili.viaAccede.codigoIneVia);
+                    o._setFieldValue("via.tipus", domicili.viaIris.acronym);
+                    o._setFieldValue("via.nom", domicili.viaIris.stname);
+                    o._setFieldValue("via.codi", domicili.viaIris.code);
                   }else{
                     o.inputVia.tgnAutocomplete('value',{
                       value: domicili.via.codigoVia, 
