@@ -27,6 +27,12 @@ Publicar els assets js i css
 php artisan vendor:publish --tag=ajtarragona-vialer-assets
 ```
 
+> **Important!!** Cada vegada que s'actualitzi el paquet, cal executar aquesta comanda (amb el paràmetre --force) per sobrescriure els assets (js i css)
+```bash
+php artisan vendor:publish --tag=ajtarragona-vialer-assets --force
+```
+
+
 ## Configuració
 
 Pots publicar l'arxiu de configuració del paquet amb la comanda:

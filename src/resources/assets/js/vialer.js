@@ -273,6 +273,7 @@
           });
   
           this.inputs.on('keyup',function(){
+                al('keyup', $(this));
               if(!o._isReadonly())
                 o._update();
           });
@@ -554,6 +555,7 @@
       _updateValue: function(){
          var o=this;
           var json= o._toJson();
+          al('_updateValue',json);
           o.element.find('#'+o.options.name+'-value').html(json);
           o._updateMapMarker();
           o._updateParcela();
