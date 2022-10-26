@@ -256,9 +256,25 @@
           this.parcelaButton=this.element.find('.refcat-button');
           this.markerButton=this.element.find('.marker-button');
           this.map=this.element.find('.vialer-map');
-          this.inputVia= this.element.find('input.tt-input');
+          this.inputVia = this.element.find('input.tt-input');
           // al(this.inputVia);
-  
+        
+          var currentval=this._value();
+          // al(currentval);
+          
+          // this.inputVia.on('focus',function(e){
+          //   al('focus', $(this).prop('readonly'));
+          //   if($(this).prop('readonly')){
+          //     e.stopPropagation();
+          //     e.preventDefault();
+          //   }
+          // });
+
+          if(currentval && currentval.via && currentval.via.codi && currentval.via.nom && currentval.via.tipus ){
+            this._disableInputVia();
+            
+          }
+
           this.searchButtons.on('click',function(e){
               var type=$(this).attr('value');
               o._search(type);
@@ -272,23 +288,43 @@
               o.map.vialerMap('deleteMarker');
           });
   
+          
+
           this.inputs.on('keyup',function(){
-                al('keyup', $(this));
-              if(!o._isReadonly())
+                // al('keyup', $(this));
+              if(!o._isReadonly()){
+
+                if($(this).is(o.inputVia)){
+                  var nomcarrer=$(this).val().toUpperCase();
+                  if(nomcarrer.includes(" ")){
+                    var tipus=nomcarrer.substring(0, nomcarrer.indexOf(" "));
+                    nomcarrer=nomcarrer.substring(nomcarrer.indexOf(" ")+1);
+                    o._setFieldValue('via.tipus',tipus);
+                    o._setFieldValue('via.nom',nomcarrer);
+                  }else{
+                     o._setFieldValue('via.nom',nomcarrer);
+                  }
+              
+                }
+
                 o._update();
+              }
           });
   
           this.inputVia.on('tgnautocomplete:change',function(e, ret){
               // al("chained autocomplete changed");
-              //al('selected', ret.item);
-  
+              // al('selected', ret.item);
+            
+              if(ret.item.value) o._disableInputVia();
+              else o._enableInputVia();
+
               o._setFieldValue('via.tipus',ret.item.tipusVia);
               o._setFieldValue('via.nom',ret.item.nomLlarg);
               // al('tgnautocomplete:change',o.inputVia);
               // setTimeout(function(){
               //   o.inputVia.val(ret.item.nomLlarg);
               // },10);
-  
+              
               o._update();
           });
   
@@ -329,6 +365,14 @@
   
       
       
+      _disableInputVia: function(){
+        this.inputVia.prop('readonly',true).prop('disabled',true);
+       
+      },
+      _enableInputVia: function(){
+        this.inputVia.prop('readonly',false).prop('disabled',false);
+      },
+
       _initMap: function(){
           
       },
@@ -555,7 +599,7 @@
       _updateValue: function(){
          var o=this;
           var json= o._toJson();
-          al('_updateValue',json);
+          // al('_updateValue',json);
           o.element.find('#'+o.options.name+'-value').html(json);
           o._updateMapMarker();
           o._updateParcela();
