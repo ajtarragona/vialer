@@ -197,23 +197,23 @@ class VialerProvider{
 	// }
 
 
-	public function searchViesByName($filter, $codiProvincia=false, $codiMunicipi=false){
-		$hash=$this->getHash('searchViesByName', [$filter, $codiProvincia, $codiMunicipi]);
-		return $this->returnCached($hash,function() use ($filter, $codiProvincia, $codiMunicipi){
+	public function searchViesByName($filter){
+		$hash=$this->getHash('searchViesByName', [$filter]);
+		return $this->returnCached($hash,function() use ($filter){
 			try{
-				return TsystemsVialer::getCarrersByName($filter,$codiMunicipi);
+				return TsystemsVialer::getCarrersByName($filter);
 			}catch(Exception $e){
 				return null;
 			}
 		});
 	}
 
-	public function getVia($codigoIneVia, $codigoProvincia=null, $codigoMunicipio=null){
+	public function getVia($codigoIneVia){
 		if(!$codigoIneVia) return null;
 		$hash=$this->getHash('getVia', [$codigoIneVia]);
-		return $this->returnCached($hash,function() use ($codigoIneVia, $codigoProvincia, $codigoMunicipio){
+		return $this->returnCached($hash,function() use ($codigoIneVia){
 			try{
-				$via=TsystemsVialer::getCarrerByCode(intval($codigoIneVia), intval($codigoMunicipio));
+				$via=TsystemsVialer::getCarrerByCode(intval($codigoIneVia));
 				return $via;
 			}catch(exception $e){
 				return null;
