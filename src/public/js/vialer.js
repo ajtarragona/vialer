@@ -1,1 +1,665 @@
-!function(e){var t={};function i(a){if(t[a])return t[a].exports;var n=t[a]={i:a,l:!1,exports:{}};return e[a].call(n.exports,n,n.exports,i),n.l=!0,n.exports}i.m=e,i.c=t,i.d=function(e,t,a){i.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:a})},i.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},i.t=function(e,t){if(1&t&&(e=i(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var a=Object.create(null);if(i.r(a),Object.defineProperty(a,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var n in e)i.d(a,n,function(t){return e[t]}.bind(null,n));return a},i.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return i.d(t,"a",t),t},i.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},i.p="/",i(i.s=0)}([function(e,t,i){i(1),e.exports=i(2)},function(e,t){$.widget("ajtarragona.vialerMap",{options:{center:{lat:0,lng:0},zoom:15,geolocate:!0,multiple:!1,readonly:!1,disabled:!1,animation:!1,cluster:!0,fitbounds:!1,clusterMinZoom:15,mapType:"roadmap",method:"get",url:!1,customicons:!1,controls:{zoom:!0,mapType:!1,scale:!1,streetView:!1,rotate:!1,fullscreen:!0},styles:[{featureType:"poi",stylers:[{visibility:"off"}]},{featureType:"transit",stylers:[{visibility:"off"}]}]},_create:function(){var e=this;this.options=$.extend({},this.options,this.element.data()),this.mapoptions={center:this.options.center,zoom:this.options.zoom,mapTypeId:this.options.mapType,zoomControl:this.options.controls.zoom,mapTypeControl:this.options.controls.mapType,mapTypeControlOptions:{position:google.maps.ControlPosition.LEFT_BOTTOM,mapTypeIds:["roadmap","satellite","hybrid","terrain"]},scaleControl:this.options.controls.scale,streetViewControl:this.options.controls.streetView,rotateControl:this.options.controls.rotate,fullscreenControl:this.options.controls.fullscreen,styles:this.options.styles},this.gmap=new google.maps.Map(this.element[0],this.mapoptions),this.infoWindow=new google.maps.InfoWindow({map:this.gmap}),this.options.geolocate?this._geolocate((function(){e._initAll()})):e._initAll()},_initAll:function(){},_geolocate:function(e){var t=this;navigator.geolocation?navigator.geolocation.getCurrentPosition((function(i){t.geoposition=i;var a={lat:i.coords.latitude,lng:i.coords.longitude};t.setCenter(a),executeCallback(e)}),(function(){t._handleLocationError(!0)})):t._handleLocationError(!1)},_handleLocationError:function(e){var t=this;t.infoWindow.setContent(e?"Error: The Geolocation service failed.":"Error: Your browser doesn't support geolocation."),t.infoWindow.setPosition(t.gmap.getCenter()),t.infoWindow.open(t.map)},_isReadonly:function(){return this.options.readonly||this.options.disabled},enable:function(){this.options.readonly=!0},disable:function(){this.options.readonly=!1},setCenter:function(e){this.options.center=e,this.gmap&&this.gmap.setCenter(e)},getCenter:function(){return this.gmap.getCenter()},deleteMarker:function(){this.marker&&(this.marker.setMap(null),this.marker=null,this.element.trigger("vialermap:markerdeleted",this))},setMarkerPosition:function(e,t){var i=this;if((is_int(parseInt(e))||is_float(parseFloat(e)))&&(is_int(parseInt(t))||is_float(parseFloat(t)))){var a={lat:parseFloat(e),lng:parseFloat(t)};this.marker?(this.marker.setPosition(a),this.gmap.getBounds().contains(this.marker.getPosition())||this.setCenter(a)):(this.addMarker(a),setTimeout((function(){i.setCenter(a)}),10))}},getMarkerPosition:function(){return this.marker?this.marker.getPosition():null},addMarker:function(e){var t=this;if(e||(e=this.getCenter()),this.marker)this.setMarkerPosition(e.lat(),e.lng());else{var i={position:e,draggable:!this._isReadonly(),animation:!!this.options.animation&&google.maps.Animation.DROP,map:this.gmap};this.marker=new google.maps.Marker(i),this.marker.addListener("drag",(function(){})),this.marker.addListener("dragend",(function(){t.element.trigger("vialermap:markerchanged",t)})),this.marker.addListener("rightclick",(function(e){t._isReadonly()||t.deleteMarker()}))}},hasMarker:function(){return null!=this.marker}}),$.widget("ajtarragona.vialerField",{options:{},_create:function(){var e=this;this.options=$.extend({},this.options,this.element.data()),this.name=this.element.find("input.vialer-value"),this.inputs=this.element.find("input"),this.searchButtons=this.element.find(".search-button"),this.clearButton=this.element.find(".clear-button"),this.parcelaButton=this.element.find(".refcat-button"),this.markerButton=this.element.find(".marker-button"),this.map=this.element.find(".vialer-map"),this.inputVia=this.element.find("input.tt-input");var t=this._value();t&&t.via&&t.via.codi&&t.via.nom&&t.via.tipus&&this._disableInputVia(),this.searchButtons.on("click",(function(t){var i=$(this).attr("value");e._search(i)})),this.clearButton.on("click",(function(){e.inputs.val(""),e.inputVia.tgnAutocomplete("clear"),e.map.vialerMap("deleteMarker")})),this.inputs.on("keyup",(function(){if(!e._isReadonly()){if($(this).is(e.inputVia)){var t=$(this).val().toUpperCase();if(t.includes(" ")){var i=t.substring(0,t.indexOf(" "));t=t.substring(t.indexOf(" ")+1),e._setFieldValue("via.tipus",i),e._setFieldValue("via.nom",t)}else e._setFieldValue("via.nom",t)}e._update()}})),this.inputVia.on("tgnautocomplete:change",(function(t,i){i.item.value?e._disableInputVia():e._enableInputVia(),e._setFieldValue("via.tipus",i.item.tipusVia),e._setFieldValue("via.nom",i.item.nomLlarg),e._update()})),this.parcelaButton.on("click",(function(){e._openParcela()})),this.markerButton.on("click",(function(t){e.map.vialerMap("addMarker");var i=e.map.vialerMap("getMarkerPosition");e._setFieldValue("location.lat",i.lat()),e._setFieldValue("location.lng",i.lng()),e._update()})),this.map.vialerMap(),this.map.on("vialermap:markerchanged",(function(t,i){var a=i.getMarkerPosition();e._setFieldValue("location.lat",a.lat()),e._setFieldValue("location.lng",a.lng()),e._update()})),this.map.on("vialermap:markerdeleted",(function(t,i){e._setFieldValue("location.lat",""),e._setFieldValue("location.lng",""),e._update()})),this._updateValue()},_disableInputVia:function(){this.inputVia.prop("readonly",!0).prop("disabled",!0)},_enableInputVia:function(){this.inputVia.prop("readonly",!1).prop("disabled",!1)},_initMap:function(){},_openParcela:function(){var e=this._value(),t=route("vialer.parcela",{refcat:e.refcat});TgnModal.open(t,"get",{},{onsuccess:function(e){},size:"lg",padding:0})},_initModalForm:function(e){var t=this;e.find(".vialer-search-form").on("submit",(function(i){i.preventDefault();var a=$(this),n=a.attr("action"),o=a.attr("method");$("html").stopLoading();var r=a.serializeControls();e.find("#vialer-search-results").startLoading(),$.ajax({url:n,type:o,data:r,dataType:"html",success:function(i){e.find("#vialer-search-results").html($(i).find("#vialer-search-results")).tgnInitAll(),t._initSearchResults(e),e.find("#vialer-search-results").stopLoading()},error:function(t){e.find("#vialer-search-results").stopLoading(),TgnFlash.error(__("Error recuperando domicilios"))}})}))},_search:function(e){var t=this,i=route("vialer.search",{type:e}),a=t._value();TgnModal.open(i,"post",a,{onsuccess:function(e){t._initModalForm(e),t._initSearchResults(e)},size:"lg",padding:0})},_initSearchResults:function(e){var t=this,i=e.find("table").data("numerero");e.find("table tbody tr").on("click",(function(a){i?t._selectNumerero($(this),e):t._recuperaDomicili($(this),e)}))},_selectNumerero:function(e,t){var i=this,a=e.data("rc"),n=e.data("numero"),o=route("vialer.numerero",{rc:a});e.startLoading(),$.ajax({url:o,type:"get",data:{},dataType:"html",success:function(a){t.find(".vialer-search-form input[name=numero]").val(n),t.find(".vialer-search-form input[name=escala]").val(""),t.find(".vialer-search-form input[name=bloc]").val(""),t.find(".vialer-search-form input[name=planta]").val(""),t.find(".vialer-search-form input[name=porta]").val(""),t.find("#vialer-search-results").html(a).tgnInitAll(),i._initSearchResults(t),e.stopLoading()},error:function(t){e.stopLoading(),TgnFlash.error(__("Error recuperando domicilios"))}})},_recuperaDomicili:function(e,t){var i=this,a=e.data("rc"),n=route("vialer.domicili",{rc:a});e.startLoading(),$.ajax({url:n,type:"get",data:{},dataType:"json",success:function(a){t.modal("hide"),e.stopLoading(),a.viaIris?(i.inputVia.tgnAutocomplete("value",{value:a.viaIris.code,name:a.viaIris.acronym+" "+a.viaIris.stname}),i._setFieldValue("via.tipus",a.viaIris.acronym),i._setFieldValue("via.nom",a.viaIris.stname),i._setFieldValue("via.codi",a.viaIris.code)):(i.inputVia.tgnAutocomplete("value",{value:a.via.codigoVia,name:a.via.tipoVia+" "+a.via.nombreVia}),i._setFieldValue("via.tipus",a.via.tipoVia),i._setFieldValue("via.nom",a.via.nombreVia),i._setFieldValue("via.codi",a.via.codigoVia)),i._setFieldValue("numero",a.numero),i._setFieldValue("lletra",a.letra),i._setFieldValue("escala",a.escalera),i._setFieldValue("bloc",a.bloque),i._setFieldValue("planta",a.planta),i._setFieldValue("porta",a.puerta),i._setFieldValue("codi_postal",a.codigo_postal),i._setFieldValue("refcat",a.rc.completa),i._setFieldValue("location.lat",a.xy.lat),i._setFieldValue("location.lng",a.xy.lng),i._setFieldValue("provincia",a.provincia),i._setFieldValue("municipi",a.municipi),i._setFieldValue("districte",a.districte),i._setFieldValue("seccio",a.seccio),i._setFieldValue("districte_administratiu",a.districte_administratiu?a.districte_administratiu.toUpperCase():""),i._update(),i._setMapMarker(a.xy.lat,a.xy.lng)},error:function(t){e.stopLoading(),TgnFlash.error(__("Error recuperando domicilio"))}})},_setMapMarker:function(e,t){},_setFieldValue:function(e,t){e="["+e.replace(".","][")+"]";var i=this.element.find('input[name="'+this.options.name+e+'"]');i.length>0&&i.val(t)},_getFieldValue:function(e){},_toJson:function(){return JSON.stringify(this._value(),void 0,4)},_data_get:function(e,t){var i=t.split("."),a=e[i[0]];if(i[1]){i.splice(0,1);var n=i.join(".");return this._data_get(a,n)}return a},_value:function(){var e=this.element.closest("form").serializeControls(),t=this.options.name.replaceAll("[",".").replaceAll("]","");return this._data_get(e,t)},_isReadonly:function(){return this.options.readonly||this.options.disabled},_updateValue:function(){var e=this,t=e._toJson();e.element.find("#"+e.options.name+"-value").html(t),e._updateMapMarker(),e._updateParcela()},_update:function(){var e=this;e._updateValue(),e.element.trigger("changed",e)},_updateParcela:function(){var e=this,t=e._value();t.refcat&&t.refcat.length>=14?e.parcelaButton.prop("disabled",!1).removeClass("disabled"):e.parcelaButton.prop("disabled",!0).addClass("disabled")},_updateMapMarker:function(){var e=this,t=e._value();e.map.vialerMap("setMarkerPosition",t.location.lat,t.location.lng),e.map.vialerMap("hasMarker")?e.markerButton.prop("disabled",!0).addClass("disabled"):e._isReadonly()||e.markerButton.prop("disabled",!1).removeClass("disabled")}})},function(e,t){}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./src/resources/assets/js/vialer.js":
+/*!*******************************************!*\
+  !*** ./src/resources/assets/js/vialer.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$.widget("ajtarragona.vialerMap", {
+  options: {
+    center: {
+      lat: 0,
+      lng: 0
+    },
+    zoom: 15,
+    geolocate: true,
+    multiple: false,
+    readonly: false,
+    disabled: false,
+    animation: false,
+    cluster: true,
+    fitbounds: false,
+    clusterMinZoom: 15,
+    mapType: 'roadmap',
+    method: 'get',
+    url: false,
+    customicons: false,
+    controls: {
+      zoom: true,
+      mapType: false,
+      scale: false,
+      streetView: false,
+      rotate: false,
+      fullscreen: true
+    },
+    styles: [{
+      featureType: "poi",
+      stylers: [{
+        visibility: "off"
+      }]
+    }, {
+      featureType: "transit",
+      stylers: [{
+        visibility: "off"
+      }]
+    }]
+  },
+  _create: function _create() {
+    var o = this;
+    //al("vialerMap", o.element);
+    this.options = $.extend({}, this.options, this.element.data());
+    this.mapoptions = {
+      center: this.options.center,
+      zoom: this.options.zoom,
+      mapTypeId: this.options.mapType,
+      zoomControl: this.options.controls.zoom,
+      mapTypeControl: this.options.controls.mapType,
+      mapTypeControlOptions: {
+        // style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+        position: google.maps.ControlPosition.LEFT_BOTTOM,
+        mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain']
+      },
+      scaleControl: this.options.controls.scale,
+      streetViewControl: this.options.controls.streetView,
+      rotateControl: this.options.controls.rotate,
+      fullscreenControl: this.options.controls.fullscreen,
+      styles: this.options.styles
+    };
+    this.gmap = new google.maps.Map(this.element[0], this.mapoptions);
+    this.infoWindow = new google.maps.InfoWindow({
+      map: this.gmap
+    });
+    if (this.options.geolocate) {
+      this._geolocate(function () {
+        o._initAll();
+      });
+    } else {
+      o._initAll();
+    }
+  },
+  _initAll: function _initAll() {
+
+    // if(this.options.marker){
+
+    //this.addMarker(this.gmap.getCenter());
+    // }
+  },
+  _geolocate: function _geolocate(callback) {
+    var o = this;
+    //al("Geolocating");
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        o.geoposition = position;
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        o.setCenter(pos);
+        executeCallback(callback);
+      }, function () {
+        o._handleLocationError(true);
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      o._handleLocationError(false);
+    }
+  },
+  _handleLocationError: function _handleLocationError(browserHasGeolocation) {
+    var o = this;
+    o.infoWindow.setContent(browserHasGeolocation ? 'Error: The Geolocation service failed.' : 'Error: Your browser doesn\'t support geolocation.');
+    o.infoWindow.setPosition(o.gmap.getCenter());
+    o.infoWindow.open(o.map);
+  },
+  _isReadonly: function _isReadonly() {
+    return this.options.readonly || this.options.disabled;
+  },
+  //Funciones publicas
+  enable: function enable() {
+    this.options.readonly = true;
+  },
+  disable: function disable() {
+    this.options.readonly = false;
+  },
+  setCenter: function setCenter(center) {
+    //al('setCenter',center);
+    //al(this.gmap);
+    this.options.center = center;
+    if (this.gmap) this.gmap.setCenter(center);
+  },
+  getCenter: function getCenter() {
+    //al('setCenter');
+    return this.gmap.getCenter();
+  },
+  deleteMarker: function deleteMarker() {
+    var o = this;
+    if (this.marker) {
+      this.marker.setMap(null);
+      this.marker = null;
+      this.element.trigger("vialermap:markerdeleted", this);
+    }
+  },
+  setMarkerPosition: function setMarkerPosition(lat, lng) {
+    var o = this;
+    if ((is_int(parseInt(lat)) || is_float(parseFloat(lat))) && (is_int(parseInt(lng)) || is_float(parseFloat(lng)))) {
+      var center = {
+        lat: parseFloat(lat),
+        lng: parseFloat(lng)
+      };
+
+      //al('setMarkerPosition', center);
+      //al(this.marker);
+      if (this.marker) {
+        this.marker.setPosition(center);
+        if (!this.gmap.getBounds().contains(this.marker.getPosition())) {
+          this.setCenter(center);
+        }
+      } else {
+        this.addMarker(center);
+        //si no no centra bien
+        setTimeout(function () {
+          o.setCenter(center);
+        }, 10);
+      }
+    }
+  },
+  getMarkerPosition: function getMarkerPosition() {
+    if (this.marker) return this.marker.getPosition();else return null;
+  },
+  addMarker: function addMarker(coords) {
+    var o = this;
+    if (!coords) coords = this.getCenter();
+    if (this.marker) {
+      this.setMarkerPosition(coords.lat(), coords.lng());
+    } else {
+      //al("addMarker ", coords);
+
+      var markerargs = {
+        position: coords,
+        draggable: !this._isReadonly(),
+        animation: this.options.animation ? google.maps.Animation.DROP : false,
+        map: this.gmap
+      };
+      this.marker = new google.maps.Marker(markerargs);
+      this.marker.addListener('drag', function () {
+        // al("DRAG");
+      });
+      this.marker.addListener('dragend', function () {
+        // al("marker drooped");
+        o.element.trigger("vialermap:markerchanged", o);
+      });
+      this.marker.addListener('rightclick', function (point) {
+        if (!o._isReadonly()) {
+          o.deleteMarker();
+        }
+      });
+    }
+  },
+  hasMarker: function hasMarker() {
+    return this.marker != null;
+  }
+});
+$.widget("ajtarragona.vialerField", {
+  options: {},
+  _create: function _create() {
+    var o = this;
+    // al("vialerField", o.element);
+    this.options = $.extend({}, this.options, this.element.data());
+    this.name = this.element.find('input.vialer-value');
+    this.inputs = this.element.find('input');
+    this.searchButtons = this.element.find('.search-button');
+    this.clearButton = this.element.find('.clear-button');
+    this.parcelaButton = this.element.find('.refcat-button');
+    this.markerButton = this.element.find('.marker-button');
+    this.map = this.element.find('.vialer-map');
+    this.inputVia = this.element.find('input.tt-input');
+    // al(this.inputVia);
+
+    var currentval = this._value();
+    // al(currentval);
+
+    // this.inputVia.on('focus',function(e){
+    //   al('focus', $(this).prop('readonly'));
+    //   if($(this).prop('readonly')){
+    //     e.stopPropagation();
+    //     e.preventDefault();
+    //   }
+    // });
+
+    if (currentval && currentval.via && currentval.via.codi && currentval.via.nom && currentval.via.tipus) {
+      this._disableInputVia();
+    }
+    this.searchButtons.on('click', function (e) {
+      var type = $(this).attr('value');
+      o._search(type);
+    });
+    this.clearButton.on('click', function () {
+      o.inputs.val('');
+      o.inputVia.tgnAutocomplete('clear');
+      o.map.vialerMap('deleteMarker');
+    });
+    this.inputs.on('keyup', function () {
+      // al('keyup', $(this));
+      if (!o._isReadonly()) {
+        if ($(this).is(o.inputVia)) {
+          var nomcarrer = $(this).val().toUpperCase();
+          if (nomcarrer.includes(" ")) {
+            var tipus = nomcarrer.substring(0, nomcarrer.indexOf(" "));
+            nomcarrer = nomcarrer.substring(nomcarrer.indexOf(" ") + 1);
+            o._setFieldValue('via.tipus', tipus);
+            o._setFieldValue('via.nom', nomcarrer);
+          } else {
+            o._setFieldValue('via.nom', nomcarrer);
+          }
+        }
+        o._update();
+      }
+    });
+    this.inputVia.on('tgnautocomplete:change', function (e, ret) {
+      // al("chained autocomplete changed");
+      // al('selected', ret.item);
+
+      if (ret.item.value) o._disableInputVia();else o._enableInputVia();
+      o._setFieldValue('via.tipus', ret.item.tipusVia);
+      o._setFieldValue('via.nom', ret.item.nomLlarg);
+      // al('tgnautocomplete:change',o.inputVia);
+      // setTimeout(function(){
+      //   o.inputVia.val(ret.item.nomLlarg);
+      // },10);
+
+      o._update();
+    });
+    this.parcelaButton.on('click', function () {
+      o._openParcela();
+    });
+    this.markerButton.on('click', function (e) {
+      o.map.vialerMap('addMarker');
+      var pos = o.map.vialerMap('getMarkerPosition');
+      o._setFieldValue('location.lat', pos.lat());
+      o._setFieldValue('location.lng', pos.lng());
+      o._update();
+    });
+    this.map.vialerMap();
+    this.map.on('vialermap:markerchanged', function (e, map) {
+      var pos = map.getMarkerPosition();
+      o._setFieldValue('location.lat', pos.lat());
+      o._setFieldValue('location.lng', pos.lng());
+      o._update();
+    });
+    this.map.on('vialermap:markerdeleted', function (e, map) {
+      o._setFieldValue('location.lat', '');
+      o._setFieldValue('location.lng', '');
+      o._update();
+    });
+
+    // this.map.vialerMap('sayhello','hello','world');
+
+    this._updateValue();
+  },
+  _disableInputVia: function _disableInputVia() {
+    this.inputVia.prop('readonly', true).prop('disabled', true);
+  },
+  _enableInputVia: function _enableInputVia() {
+    this.inputVia.prop('readonly', false).prop('disabled', false);
+  },
+  _initMap: function _initMap() {},
+  _openParcela: function _openParcela() {
+    var o = this;
+    var value = o._value();
+    // al(value);
+    var modalurl = route('vialer.parcela', {
+      'refcat': value.refcat
+    }); //baseUrl()+"/backend/entities/componentmodal";
+    var params = {};
+    TgnModal.open(modalurl, 'get', params, {
+      onsuccess: function onsuccess(modal) {},
+      size: 'lg',
+      padding: 0
+    });
+  },
+  _initModalForm: function _initModalForm(modal) {
+    var o = this;
+    // al('_initModalForm');
+    modal.find('.vialer-search-form').on('submit', function (e) {
+      e.preventDefault();
+      var form = $(this);
+      var url = form.attr('action');
+      var method = form.attr('method');
+      $('html').stopLoading();
+      //   al('submit search',url);
+      var params = form.serializeControls();
+      //   al(params);
+      modal.find('#vialer-search-results').startLoading();
+      $.ajax({
+        url: url,
+        type: method,
+        data: params,
+        dataType: 'html',
+        success: function success(content) {
+          //   al(content);
+          modal.find('#vialer-search-results').html($(content).find('#vialer-search-results')).tgnInitAll();
+          o._initSearchResults(modal);
+          modal.find('#vialer-search-results').stopLoading();
+        },
+        error: function error(xhr) {
+          modal.find('#vialer-search-results').stopLoading();
+          TgnFlash.error(__("Error recuperando domicilios"));
+          // modal.modal('hide');
+        }
+      });
+    });
+  },
+
+  _search: function _search(type) {
+    var o = this;
+    var modalurl = route('vialer.search', {
+      'type': type
+    }); //baseUrl()+"/backend/entities/componentmodal";
+    var params = o._value();
+    TgnModal.open(modalurl, 'post', params, {
+      onsuccess: function onsuccess(modal) {
+        o._initModalForm(modal);
+        o._initSearchResults(modal);
+      },
+      size: 'lg',
+      padding: 0
+    });
+  },
+  _initSearchResults: function _initSearchResults(modal) {
+    var o = this;
+    // al('_initSearchResults',modal);
+    var isnumerero = modal.find('table').data('numerero');
+    modal.find('table tbody tr').on('click', function (e) {
+      // al('click row', $(this).data('id'));
+      if (isnumerero) {
+        o._selectNumerero($(this), modal);
+      } else {
+        o._recuperaDomicili($(this), modal);
+      }
+    });
+  },
+  _selectNumerero: function _selectNumerero(row, modal) {
+    var o = this;
+    var rc = row.data('rc');
+    var numero = row.data('numero');
+    var url = route('vialer.numerero', {
+      'rc': rc
+    });
+    var params = {};
+    row.startLoading();
+    $.ajax({
+      url: url,
+      type: 'get',
+      data: params,
+      dataType: 'html',
+      success: function success(content) {
+        modal.find('.vialer-search-form input[name=numero]').val(numero);
+        modal.find('.vialer-search-form input[name=escala]').val('');
+        modal.find('.vialer-search-form input[name=bloc]').val('');
+        modal.find('.vialer-search-form input[name=planta]').val('');
+        modal.find('.vialer-search-form input[name=porta]').val('');
+        modal.find('#vialer-search-results').html(content).tgnInitAll();
+        o._initSearchResults(modal);
+        // al(content);
+
+        row.stopLoading();
+      },
+      error: function error(xhr) {
+        row.stopLoading();
+        TgnFlash.error(__("Error recuperando domicilios"));
+        // modal.modal('hide');
+      }
+    });
+  },
+
+  _recuperaDomicili: function _recuperaDomicili(row, modal) {
+    var o = this;
+    var rc = row.data('rc');
+    var url = route('vialer.domicili', {
+      'rc': rc
+    });
+    var params = {};
+    row.startLoading();
+    $.ajax({
+      url: url,
+      type: 'get',
+      data: params,
+      dataType: 'json',
+      success: function success(domicili) {
+        //al('_recuperaDomicili',domicili);
+        modal.modal('hide');
+        row.stopLoading();
+        if (domicili.viaIris) {
+          o.inputVia.tgnAutocomplete('value', {
+            value: domicili.viaIris.code,
+            name: domicili.viaIris.acronym + ' ' + domicili.viaIris.stname
+          });
+          o._setFieldValue("via.tipus", domicili.viaIris.acronym);
+          o._setFieldValue("via.nom", domicili.viaIris.stname);
+          o._setFieldValue("via.codi", domicili.viaIris.code);
+        } else {
+          o.inputVia.tgnAutocomplete('value', {
+            value: domicili.via.codigoVia,
+            name: domicili.via.tipoVia + ' ' + domicili.via.nombreVia
+          });
+          o._setFieldValue("via.tipus", domicili.via.tipoVia);
+          o._setFieldValue("via.nom", domicili.via.nombreVia);
+          o._setFieldValue("via.codi", domicili.via.codigoVia);
+        }
+        o._setFieldValue("numero", domicili.numero);
+        o._setFieldValue("lletra", domicili.letra);
+        o._setFieldValue("escala", domicili.escalera);
+        o._setFieldValue("bloc", domicili.bloque);
+        o._setFieldValue("planta", domicili.planta);
+        o._setFieldValue("porta", domicili.puerta);
+        o._setFieldValue("codi_postal", domicili.codigo_postal);
+        o._setFieldValue("refcat", domicili.rc.completa);
+        o._setFieldValue("location.lat", domicili.xy.lat);
+        o._setFieldValue("location.lng", domicili.xy.lng);
+        o._setFieldValue("provincia", domicili.provincia);
+        o._setFieldValue("municipi", domicili.municipi);
+        o._setFieldValue("districte", domicili.districte);
+        o._setFieldValue("seccio", domicili.seccio);
+        o._setFieldValue("districte_administratiu", domicili.districte_administratiu ? domicili.districte_administratiu.toUpperCase() : '');
+        o._update();
+        o._setMapMarker(domicili.xy.lat, domicili.xy.lng);
+
+        // modal.modal('hide');
+      },
+
+      error: function error(xhr) {
+        row.stopLoading();
+        TgnFlash.error(__("Error recuperando domicilio"));
+        // modal.modal('hide');
+      }
+    });
+  },
+
+  _setMapMarker: function _setMapMarker(lat, lng) {
+    //al("Moviendo marcador a "+lat+","+lng);
+  },
+  _setFieldValue: function _setFieldValue(name, value) {
+    name = "[" + name.replace(".", "][") + "]";
+    var input = this.element.find('input[name="' + this.options.name + '' + name + '"]');
+    if (input.length > 0) input.val(value);
+  },
+  _getFieldValue: function _getFieldValue(name) {
+    //return this.element.find('[name=]);
+  },
+  _toJson: function _toJson() {
+    return JSON.stringify(this._value(), undefined, 4);
+  },
+  _data_get: function _data_get(obj, string) {
+    var parts = string.split('.');
+    var newObj = obj[parts[0]];
+    if (parts[1]) {
+      parts.splice(0, 1);
+      var newString = parts.join('.');
+      return this._data_get(newObj, newString);
+    }
+    return newObj;
+  },
+  _value: function _value() {
+    var fields = this.element.closest('form').serializeControls();
+    // al('_value', fields);
+    var fieldname = this.options.name.replaceAll('[', '.').replaceAll(']', '');
+    // al(fieldname);
+    var ret = this._data_get(fields, fieldname);
+    // al(ret);
+    return ret;
+  },
+  _isReadonly: function _isReadonly() {
+    return this.options.readonly || this.options.disabled;
+  },
+  _updateValue: function _updateValue() {
+    var o = this;
+    var json = o._toJson();
+    // al('_updateValue',json);
+    o.element.find('#' + o.options.name + '-value').html(json);
+    o._updateMapMarker();
+    o._updateParcela();
+  },
+  _update: function _update() {
+    //al("Update");
+    var o = this;
+    o._updateValue();
+    // al('trigger changed',o.element);
+    o.element.trigger("changed", o);
+  },
+  _updateParcela: function _updateParcela() {
+    var o = this;
+    var value = o._value();
+    if (value.refcat && value.refcat.length >= 14) {
+      o.parcelaButton.prop('disabled', false).removeClass('disabled');
+    } else {
+      o.parcelaButton.prop('disabled', true).addClass('disabled');
+    }
+  },
+  _updateMapMarker: function _updateMapMarker() {
+    var o = this;
+    var value = o._value();
+    // al('hasMarker', o.map.vialerMap('hasMarker'));
+    o.map.vialerMap('setMarkerPosition', value.location.lat, value.location.lng);
+    if (o.map.vialerMap('hasMarker')) {
+      o.markerButton.prop('disabled', true).addClass('disabled');
+    } else {
+      if (!o._isReadonly()) o.markerButton.prop('disabled', false).removeClass('disabled');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./src/resources/assets/sass/vialer.scss":
+/*!***********************************************!*\
+  !*** ./src/resources/assets/sass/vialer.scss ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 0:
+/*!*****************************************************************************************!*\
+  !*** multi ./src/resources/assets/js/vialer.js ./src/resources/assets/sass/vialer.scss ***!
+  \*****************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(/*! C:\xampp\htdocs\laravel\packages\ajtarragona\vialer\src\resources\assets\js\vialer.js */"./src/resources/assets/js/vialer.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\laravel\packages\ajtarragona\vialer\src\resources\assets\sass\vialer.scss */"./src/resources/assets/sass/vialer.scss");
+
+
+/***/ })
+
+/******/ });

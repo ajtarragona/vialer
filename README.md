@@ -202,12 +202,14 @@ Primer cal, a la teva plantilla, afegir els assets js i css:
 	'name'=>'vialer1',
 	'class' => 'mb-3',
 	'color'=>'info',
-	'show_map'=>false,
-	'show_refcat'=>true,
-	'show_xy'=>true,
-	"search_xy"=>false,
-	"search_refcat"=>false,
+	'show_map'=>false, 
+	'show_refcat'=>true, 
+	'show_xy'=>true,  
+	"search_xy"=>false, 
+	"search_refcat"=>false, 
 	"btn_parcela"=>true,
+	
+	'via_fields'=>['numero','lletra','escala','bloc','planta','porta','codi_postal','provincia','municipi','districte','seccio',
 	"value"=> [
 		"via"=> [
 			"tipus" => "CR",
@@ -238,12 +240,13 @@ map_position | left, right, top, bottom | bottom
 map_height | | 300px
 map_columns | En cas de posicio del mapa left o right, columes que ocuparà (1 a 12) | 6
 color | Dels colors bootstrap (primary, secondary, etc.) | null
+via_fields | Especifica quins camps del vialer mostrar | numero, lletra, escala, bloc, planta, porta, codi_postal, provincia, municipi, districte, seccio, districte_administratiu
 show_map | Mostrar el mapa de google | true
-show_refcat | Mostrar la pestanya de referència catastral | true
-show_xy | Mostrar la pestanya de Latitud i longitud  | true
-search_refcat | Habilita la cerca per referència catastral | true
-btn_parcela | Habilita el botó per mostrar la parcela al catastre | true
-search_xy | Habilita la cerca per Latitud i longitud | true
+show_refcat | Mostrar la pestanya de referència catastral  | true
+show_xy | Mostrar la pestanya de Latitud i longitud   | true
+search_refcat | Habilita la cerca per referència catastral  | true
+btn_parcela | Habilita el botó per mostrar la parcela al catastre  | true
+search_xy | Habilita la cerca per Latitud i longitud  | true
 readonly | Només lectura | false
 
 Si fem servir el camp dins d'un formulari, quan fem el submit el que s'enviarà per la request és un sol camp amb el nom del camp i el valor de tots els subcamps per separat.

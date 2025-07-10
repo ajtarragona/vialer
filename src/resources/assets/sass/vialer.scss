@@ -49,10 +49,10 @@
         position:relative
     }
     
-    .card-header .clean-btn{
+    .clean-btn{
         position:absolute;
         right:0;
-        top:0;
+        bottom:0;
         padding:6px
     }
 
@@ -64,6 +64,17 @@
         
     .card.with-bg .card-header-tabs .nav-link:not(.active){
         color: white;
+    }
+
+    .field-title{
+        line-height: 1em;
+        display: block;
+        padding: .8rem 1rem .4rem;
+        color: #55595c;
+        font-size: .8em;
+        text-transform: uppercase;
+        letter-spacing: .1em;
+        font-weight: 500;
     }
 }
 

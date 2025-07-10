@@ -1,5 +1,6 @@
-
-    @tabcontent(['class'=>'bg-white pt-2'])
+<div class="position-relative ">
+        
+    @tabcontent(['class'=>'bg-white '.(($show_refcat || $show_xy)?'pt-2':'')])
         
         @tabpane(['active'=>true,'id'=>'tab-via-'.$id,'persist'=>$id.'-vialer-tab'])
             @include('vialer::control._form_via')
@@ -17,3 +18,13 @@
             @endtabpane
         {{-- @endif --}}
     @endtabcontent
+    {{-- {{$btn_clear}} --}}
+    @if($btn_clear)
+        <div class="clean-btn" {{$readonly?'hidden':''}} >
+            @button(['type'=>'button','style'=>($color?$color:'light'),'size'=>'sm','class'=>' clear-button','name'=>'action','value'=>'clear','disabled'=>$readonly]) 
+                @icon('eraser') 
+                <span class="d-none d-md-inline-block">@lang("vialer::vialer.Netejar")</span>
+            @endbutton
+        </div>
+    @endif
+</div>

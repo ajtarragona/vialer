@@ -31,6 +31,10 @@ class VialerRenderer{
     ];
 
 
+    protected $default_via_fields=[
+        'numero','lletra','escala','bloc','planta','porta','codi_postal','provincia','municipi','districte','seccio','districte_administratiu'
+    ];
+
     protected $defaults=[
         'class' => '',
         "value" => null,
@@ -53,6 +57,9 @@ class VialerRenderer{
         "readonly"=>false,
         "required"=>false,
         "disabled"=>false,
+        "search_via" => true,
+        "btn_add_marker" => true,
+        "btn_clear" => true
     ];
 
     protected $options=[];
@@ -65,6 +72,10 @@ class VialerRenderer{
         // $this->default_domicili= to_object($this->default_domicili);
 
         $this->options = array_merge($this->defaults, $options);
+
+        if(!isset($options['via_fields'])){
+            $this->options["via_fields"] = $this->default_via_fields;
+        }
         $this->domicili=new Domicili();
         //modifico el valor para que tenga todos los campos en blanco almenos
         $value=$this->options["value"];
@@ -77,7 +88,8 @@ class VialerRenderer{
         // dd($this);
 
         $this->options['class'].= " vialer-field map-". $this->options["map_position"];
-    
+        
+    //    dump($options,$this->options);
 
     }
 

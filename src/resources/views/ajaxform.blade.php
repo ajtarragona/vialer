@@ -16,12 +16,14 @@
             <div class="col-sm-4 ">  
                 @vialerFormControl([
                     'name'=>'carrer',
+                    'id'=>'carrer-1',
                     'class' => 'mb-3',
                     // 'color'=>'info',
                     'label' => 'mierda',
                     'icon' => 'map-marker',
                     'helptext' => 'Lalafd lfd lfdlf',
                     'placeholder' => 'Lalafd lfd lfdlf',
+                    "via_fields"=>['numero','lletra','escala','bloc','planta','porta','codi_postal','provincia','municipi','districte','seccio','districte_administratiu'],
                     // 'show_map'=>false,
                     // 'show_refcat'=>true,
                     // 'show_xy'=>true,
@@ -46,34 +48,64 @@
 
             </div>
 
-            {{-- <div class="col-sm-8 ">     
+            <div class="col-sm-8 ">     
                   @vialerFormControl([
                     'name'=>'vialer2',
+                    'id'=>'carrer-2',
+                    'label' => 'mierda',
+                    'icon' => 'map-marker',
                     "map_position" => "left",
                     "map_columns" => 3,
                     'class' => 'mb-3',
                     'color'=>'secondary',
                     "readonly" =>false
                 ])
+
+                @vialerFormControl([
+                    'name'=>'vialer2',
+                    'id'=>'carrer-3',
+                    'icon' => 'map',
+                    "label"=>"Domicili",
+                    "show_map" => false,
+                    "show_refcat"=>false,
+                    "show_xy"=>false,
+                    "map_position" => "right",
+                    "via_fields"=>['numero'],
+                    'class' => 'mb-3',
+                    "readonly" =>false,
+                    'class' => 'mb-3',  
+                     "search_via"=>false,
+                     "search_xy"=>false,
+                     "search_refcat"=>false,
+                     "btn_parcela"=>false,
+                     "btn_add_marker"=>false,
+                     "btn_clear"=>false,
+                ])
             </div>
             <div class="col-sm-8 ">  
                 @vialerFormControl([
                     'name'=>'vialer3',
+                    'id'=>'carrer-4',
+                    'label' => 'mierda',
+                    'icon' => 'map-marker',
                     "map_position" => "right",
-                    'class' => 'mb-3'
+                    
                     
                 ])
 
-            </div> --}}
-{{-- 
+            </div>
+
             <div class="col-sm-4 ">     
                   @vialerFormControl([
                     'name'=>'vialer4',
+                    'id'=>'carrer-5',
+                    'label' => 'mierda',
+                    'icon' => 'map-marker',
                     "map_position" => "top",
                     "map_height" => "200px",
                     'class' => 'mb-3'
                 ])
-            </div> --}}
+            </div>
             
         </div>
     
