@@ -247,6 +247,9 @@ show_xy | Mostrar la pestanya de Latitud i longitud   | true
 search_refcat | Habilita la cerca per referència catastral  | true
 btn_parcela | Habilita el botó per mostrar la parcela al catastre  | true
 search_xy | Habilita la cerca per Latitud i longitud  | true
+search_via | Habilita la cerca per carrer  | true
+btn_add_marker | Habilita el botó d'afegir marcador al mapa | true
+btn_clear | Habilita el botó de netejar tot el camp | true
 readonly | Només lectura | false
 
 Si fem servir el camp dins d'un formulari, quan fem el submit el que s'enviarà per la request és un sol camp amb el nom del camp i el valor de tots els subcamps per separat.

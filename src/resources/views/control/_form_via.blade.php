@@ -29,7 +29,8 @@
                     'min-length' => 2,
                     'value'=>$value->via->codi,
                     'valuename' => $value->via->tipus?($value->via->tipus ." ".$value->via->nom):$value->via->nom,
-                    "readonly" => $readonly
+                    "readonly" => $readonly,
+	                'parent'=>'body'
 
                 ],$data)
             </div>
