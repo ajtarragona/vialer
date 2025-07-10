@@ -1,4 +1,4 @@
-<div class="position-relative ">
+<div class="position-relative overflow-auto">
         
     @tabcontent(['class'=>'bg-white '.(($show_refcat || $show_xy)?'pt-2':'')])
         
